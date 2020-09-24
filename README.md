@@ -1,16 +1,33 @@
 # stattop
 
-Accepts a stream of integers, each on its own line, and calculates a running mean/standard deviation until you hit Ctrl-C.
+Accepts a stream of integers, one per line, and calculates a running mean/standard deviation.
 
-## Usage
+## Example Usage
 
-Stream integers to stattop, or like here parse a time out of a logfile tail:
+```
+for i in 0 1 2 3 4 5 6 7 8 9; do
+  echo $i >> numbers.txt
+done
+
+cat numbers.txt | ./stattop
+```
+
+Output:
+```
+last=9 count=10 mean=4 std_dev=3
+```
+
+Also accepts a stream, here is an example of parsing times from a logfile tail:
 
 ```tail -f logfile | gawk 'match($0, /time=([0-9]+)ms/, m) {print m[1];system("")}' | ./stattop```
 
 ## Building
 
 ```./build.sh```
+
+Which is really just:
+
+```gcc -o stattop stattop.c -lm```
 
 Should compile on any POSIX system.
 
